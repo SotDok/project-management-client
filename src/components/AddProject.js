@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import projectsService from '../services/projects.service';
 
 
 
@@ -13,22 +13,34 @@ function AddProject(props) {
 
     const requestBody = { title, description };
 
-    const storedToken = localStorage.getItem('authToken');
+   // const storedToken = localStorage.getItem('authToken');
     
-    axios
-    .post(
-    `${process.env.REACT_APP_API_URL}/api/projects`,
-    requestBody,
-    { headers: { Authorization: `Bearer ${storedToken}` } }
-  )
+  //   axios
+  //   .post(
+  //   `${process.env.REACT_APP_API_URL}/api/projects`,
+  //   requestBody,
+  //   { headers: { Authorization: `Bearer ${storedToken}` } }
+  // )
+  //   .then((response) => {
+  //   // Reset the state
+  //   setTitle("");
+  //   setDescription("");
+  //   props.refreshProjects();
+  // })
+  //   .catch((error) => console.log(error));
+
+
+//instead of axios we call the class
+  projectsService.createProject(requestBody)
     .then((response) => {
-    // Reset the state
-    setTitle("");
-    setDescription("");
-    props.refreshProjects();
-  })
+      // Reset the state
+      setTitle("");
+      setDescription("");
+      props.refreshProjects();
+    })
     .catch((error) => console.log(error));
 };
+
 
 
   return (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from 'react-router-dom';
-import axios from "axios"
 import AddTask from "../components/AddTask";
 import TaskCard from "../components/TaskCard";
+import projectsService from "../services/projects.service";
 
 
 
@@ -17,13 +17,8 @@ function ProjectDetailsPage (props) {
   
   const getProject = () => {
 
-    const storedToken = localStorage.getItem("authToken");
 
-    axios
-    .get(
-      `${process.env.REACT_APP_API_URL}/api/projects/${projectId}`,
-      { headers: { Authorization: `Bearer ${storedToken}` } }
-    )
+    projectsService.getProject(projectId)
     .then((response) => {
       const oneProject = response.data;
       setProject(oneProject);
