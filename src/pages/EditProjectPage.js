@@ -14,8 +14,12 @@ function EditProjectPage(props) {
   const navigate = useNavigate();
   
 useEffect(() => {
+
+  // Get the token from the localStorage
+  const storedToken = localStorage.getItem('authToken'); 
   axios
-    .get(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`)
+    .get(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`,
+     { headers: { Authorization: `Bearer ${storedToken}` } })
     .then((response) => {
       const oneProject = response.data;
       setTitle(oneProject.title);
@@ -29,9 +33,12 @@ const handleFormSubmit = (e) => {
   e.preventDefault();
   const requestBody = { title, description };
 
+  const storedToken = localStorage.getItem('authToken');
+
  // Make a PUT request to update the project
   axios
-    .put(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`, requestBody)
+    .put(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`, requestBody,
+    { headers: { Authorization: `Bearer ${storedToken}` } } )
     .then((response) => {
        // Once the request is resolved successfully and the project
         // is updated we navigate back to the details page
@@ -42,8 +49,12 @@ const handleFormSubmit = (e) => {
 // DELETE functionality
 
 const deleteProject = () => {
+
+  const storedToken = localStorage.getItem('authToken');
   axios 
-    .delete(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`)
+
+    .delete(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`,
+    { headers: { Authorization: `Bearer ${storedToken}` } } )
     .then(() => {
       //navigate back to the list of projects when delete is successful
       navigate("/projects");
@@ -72,7 +83,7 @@ const deleteProject = () => {
           onChange={(e) => setDescription(e.target.value)}
         />
 
-        <button type="submit">Update Project</button>
+        <button type="ubmit">Update Project</button>
       </form>
 
       <button onClick={deleteProject}>Delete Project</button>

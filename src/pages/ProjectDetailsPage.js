@@ -11,16 +11,25 @@ import TaskCard from "../components/TaskCard";
 function ProjectDetailsPage (props) {
   const [project, setProject] = useState(null);
   const { projectId } = useParams();
+
+  
+  
   
   const getProject = () => {
+
+    const storedToken = localStorage.getItem("authToken");
+
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/projects/${projectId}`)
-      .then((response) => {
-      	const oneProject = response.data;
-      	setProject(oneProject);
-    	})
-      .catch((error) => console.log(error));
-  };
+    .get(
+      `${process.env.REACT_APP_API_URL}/api/projects/${projectId}`,
+      { headers: { Authorization: `Bearer ${storedToken}` } }
+    )
+    .then((response) => {
+      const oneProject = response.data;
+      setProject(oneProject);
+    })
+    .catch((error) => console.log(error));
+};
   
   
   useEffect(()=> {

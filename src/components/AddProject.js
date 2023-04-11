@@ -12,17 +12,23 @@ function AddProject(props) {
     e.preventDefault();
 
     const requestBody = { title, description };
+
+    const storedToken = localStorage.getItem('authToken');
     
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/projects`, requestBody)
-      .then((response) => {
-        // Reset the state
-        setTitle("");
-        setDescription("");
-        props.refreshProjects();
-      })
-      .catch((error) => console.log(error));
-  };
+    .post(
+    `${process.env.REACT_APP_API_URL}/api/projects`,
+    requestBody,
+    { headers: { Authorization: `Bearer ${storedToken}` } }
+  )
+    .then((response) => {
+    // Reset the state
+    setTitle("");
+    setDescription("");
+    props.refreshProjects();
+  })
+    .catch((error) => console.log(error));
+};
 
 
   return (

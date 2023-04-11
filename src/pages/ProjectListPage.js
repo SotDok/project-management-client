@@ -7,14 +7,23 @@ import AddProject from "../components/AddProject";
 
 
 function ProjectListPage() {
+
+  
+
   const [projects, setProjects] = useState([]);
 
   const getAllProjects = () => {
+
+    const storedToken = localStorage.getItem("authToken");
+    
     axios
-      .get(`${process.env.REACT_APP_API_URL}/api/projects`)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log(error));
-  };
+    .get(
+    `${process.env.REACT_APP_API_URL}/api/projects`,
+    { headers: { Authorization: `Bearer ${storedToken}` } }
+  )
+    .then((response) => setProjects(response.data))
+    .catch((error) => console.log(error));
+};
 
   // We set this effect will run only once, after the initial render
   // by setting the empty dependency array - []
